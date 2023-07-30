@@ -25,3 +25,4 @@ function init () {
   }, { once: true })
 }
 document.addEventListener('DOMContentLoaded', init, { once: true })
+document.getElementById('close').addEventListener('click', e=>e.currentTarget.parentElement.className = 'hidden')
