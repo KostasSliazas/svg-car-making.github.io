@@ -1,0 +1,143 @@
+:root {
+  --primary-color: #383459;
+  --secondary-color: #806943;
+  --success-color: #2f5a44;
+  --warning-color: #693651;
+  /* Yellow */
+}
+
+* {
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  cursor: pointer;
+  display: flex;
+  place-content: center;
+  place-items: center;
+  flex-direction: column;
+  background: repeating-radial-gradient(circle, rgb(119, 109, 189) 0px, rgb(119, 109, 189) 24px, rgb(122, 112, 192) 25px, rgb(122, 112, 192) 48px, rgb(125, 115, 195) 49px, rgb(125, 115, 195) 72px, rgb(128, 118, 198) 73px, rgb(128, 118, 198) 96px, rgb(131, 121, 201) 97px, rgb(131, 121, 201) 120px, rgb(134, 124, 204) 121px, rgb(134, 124, 204) 144px, rgb(137, 127, 207) 145px, rgb(137, 127, 207) 168px, rgb(140, 130, 210) 169px, rgb(140, 130, 210) 192px, rgb(143, 133, 213) 193px, rgb(143, 133, 213) 216px, rgb(146, 136, 216) 217px, rgb(146, 136, 216) 240px, rgb(149, 139, 219) 241px, rgb(149, 139, 219) 264px, rgb(152, 142, 222) 265px, rgb(152, 142, 222) 288px, rgb(155, 145, 225) 289px, rgb(155, 145, 225) 312px, rgb(158, 148, 228) 313px, rgb(158, 148, 228) 336px, rgb(161, 151, 231) 337px, rgb(161, 151, 231) 360px, rgb(164, 154, 234) 361px, rgb(164, 154, 234) 384px, rgb(167, 157, 237) 385px, rgb(167, 157, 237) 408px, rgb(170, 160, 240) 409px, rgb(170, 160, 240) 432px, rgb(167, 157, 237) 433px, rgb(167, 157, 237) 456px, rgb(164, 154, 234) 457px, rgb(164, 154, 234) 480px, rgb(161, 151, 231) 481px, rgb(161, 151, 231) 504px, rgb(158, 148, 228) 505px, rgb(158, 148, 228) 528px, rgb(155, 145, 225) 529px, rgb(155, 145, 225) 552px, rgb(152, 142, 222) 553px, rgb(152, 142, 222) 576px, rgb(149, 139, 219) 577px, rgb(149, 139, 219) 600px, rgb(146, 136, 216) 601px, rgb(146, 136, 216) 624px, rgb(143, 133, 213) 625px, rgb(143, 133, 213) 648px, rgb(140, 130, 210) 649px, rgb(140, 130, 210) 672px, rgb(137, 127, 207) 673px, rgb(137, 127, 207) 696px, rgb(134, 124, 204) 697px, rgb(134, 124, 204) 720px, rgb(131, 121, 201) 721px, rgb(131, 121, 201) 744px, rgb(128, 118, 198) 745px, rgb(128, 118, 198) 768px, rgb(125, 115, 195) 769px, rgb(125, 115, 195) 792px, rgb(122, 112, 192) 793px, rgb(122, 112, 192) 816px) fixed;
+  color: #fff;
+}
+
+svg {
+  height: 100%;
+  width: 100%;
+  shape-rendering: geometricprecision;
+}
+
+:not(.hidden) + h1 {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.box {
+  background: linear-gradient(0deg, var(--success-color), var(--secondary-color));
+  border: 10px solid #333;
+  border-radius: 2em;
+  padding: 1em;
+}
+
+div.box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  place-content: center;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  transition: 1s 45s opacity;
+  min-height: 300px;
+}
+
+.hidden ~ div.box {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#close {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  border: 0;
+  appearance: none;
+  background: #000;
+  background: #fff;
+  right: -14px;
+  position: absolute;
+  cursor: pointer;
+  top: -14px;
+}
+
+path {
+  transition: ease 1s;
+}
+
+.controls {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  place-content: space-around;
+  flex-wrap: wrap;
+  padding: 1em;
+  place-items: center;
+}
+
+.controls button,
+.controls input[type='color'] {
+  margin: 1em;
+  cursor: pointer;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition:
+    background-color 0.3s,
+    transform 0.2s;
+  min-block-size: 2em;
+  color: #fff;
+}
+
+.controls input[type='color'] {
+  padding: 0;
+  background-color: #111;
+}
+
+.col1 {
+  background: var(--warning-color);
+}
+
+.col2 {
+  background: var(--success-color);
+}
+
+/* Default link styles */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  /* Remove underline */
+}
+
+/* Link on hover */
+a:hover {
+  color: var(--secondary-color);
+}
+
+/* Link on active */
+a:active {
+  color: var(--primary-color);
+}
