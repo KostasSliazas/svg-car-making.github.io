@@ -113,7 +113,17 @@ path {
   padding: 0;
   background-color: #111;
 }
-
+label {
+  position: absolute;
+  top: -0.5em;
+  left: 0;
+  width: 100%;
+  line-height: 1;
+}
+.color-picker {
+  position: relative;
+  text-align: center;
+}
 .col1 {
   background: var(--warning-color);
 }
