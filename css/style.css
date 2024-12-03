@@ -18,11 +18,11 @@ body {
 body {
   cursor: pointer;
   display: flex;
-  place-content: center;
   place-items: center;
-  flex-direction: column;
+  place-content: end;
   background: repeating-radial-gradient(circle, rgb(119, 109, 189) 0px, rgb(119, 109, 189) 24px, rgb(122, 112, 192) 25px, rgb(122, 112, 192) 48px, rgb(125, 115, 195) 49px, rgb(125, 115, 195) 72px, rgb(128, 118, 198) 73px, rgb(128, 118, 198) 96px, rgb(131, 121, 201) 97px, rgb(131, 121, 201) 120px, rgb(134, 124, 204) 121px, rgb(134, 124, 204) 144px, rgb(137, 127, 207) 145px, rgb(137, 127, 207) 168px, rgb(140, 130, 210) 169px, rgb(140, 130, 210) 192px, rgb(143, 133, 213) 193px, rgb(143, 133, 213) 216px, rgb(146, 136, 216) 217px, rgb(146, 136, 216) 240px, rgb(149, 139, 219) 241px, rgb(149, 139, 219) 264px, rgb(152, 142, 222) 265px, rgb(152, 142, 222) 288px, rgb(155, 145, 225) 289px, rgb(155, 145, 225) 312px, rgb(158, 148, 228) 313px, rgb(158, 148, 228) 336px, rgb(161, 151, 231) 337px, rgb(161, 151, 231) 360px, rgb(164, 154, 234) 361px, rgb(164, 154, 234) 384px, rgb(167, 157, 237) 385px, rgb(167, 157, 237) 408px, rgb(170, 160, 240) 409px, rgb(170, 160, 240) 432px, rgb(167, 157, 237) 433px, rgb(167, 157, 237) 456px, rgb(164, 154, 234) 457px, rgb(164, 154, 234) 480px, rgb(161, 151, 231) 481px, rgb(161, 151, 231) 504px, rgb(158, 148, 228) 505px, rgb(158, 148, 228) 528px, rgb(155, 145, 225) 529px, rgb(155, 145, 225) 552px, rgb(152, 142, 222) 553px, rgb(152, 142, 222) 576px, rgb(149, 139, 219) 577px, rgb(149, 139, 219) 600px, rgb(146, 136, 216) 601px, rgb(146, 136, 216) 624px, rgb(143, 133, 213) 625px, rgb(143, 133, 213) 648px, rgb(140, 130, 210) 649px, rgb(140, 130, 210) 672px, rgb(137, 127, 207) 673px, rgb(137, 127, 207) 696px, rgb(134, 124, 204) 697px, rgb(134, 124, 204) 720px, rgb(131, 121, 201) 721px, rgb(131, 121, 201) 744px, rgb(128, 118, 198) 745px, rgb(128, 118, 198) 768px, rgb(125, 115, 195) 769px, rgb(125, 115, 195) 792px, rgb(122, 112, 192) 793px, rgb(122, 112, 192) 816px) fixed;
   color: #fff;
+  flex-direction: column;
 }
 
 svg {
@@ -46,7 +46,7 @@ svg {
   padding: 1em;
 }
 
-div.box {
+.box {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -57,9 +57,10 @@ div.box {
   transform: translate(-50%, -50%);
   opacity: 1;
   transition: 1s 45s opacity;
+}
+div.box {
   min-height: 300px;
 }
-
 .hidden ~ div.box {
   opacity: 0;
   pointer-events: none;
@@ -72,7 +73,6 @@ div.box {
   border: 0;
   appearance: none;
   background: #000;
-  background: #fff;
   right: -14px;
   position: absolute;
   cursor: pointer;
@@ -105,9 +105,6 @@ path {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  transition:
-    background-color 0.3s,
-    transform 0.2s;
   min-block-size: 2em;
   color: #fff;
 }
@@ -124,20 +121,71 @@ path {
 .col2 {
   background: var(--success-color);
 }
+/* Center the loader in the viewport */
+#loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  text-align: center;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  place-content: center;
+  place-items: center;
+  font-size: 12px;
+}
+#loader::after {
+  content: '';
+  display: block;
+  border: 7px solid #ccc;
+  border-top-width: 7px;
+  border-top-style: solid;
+  border-top-color: rgb(204, 204, 204);
+  border-top: 7px solid #777;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: spin 0.34s linear infinite;
+  box-sizing: border-box;
+}
+#loader.hidden {
+  display: none;
+}
+/* Spin animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
-/* Default link styles */
+#svg-holder {
+  height: 100%;
+  width: 100%;
+}
+p {
+  padding: 0 1em;
+}
 a {
   color: var(--primary-color);
   text-decoration: none;
-  /* Remove underline */
 }
 
-/* Link on hover */
 a:hover {
   color: var(--secondary-color);
 }
 
-/* Link on active */
 a:active {
   color: var(--primary-color);
+}
+footer {
+  width: 100%;
+  text-align: right;
 }
