@@ -150,57 +150,59 @@
    * @returns {Promise<void>} A promise that resolves when all the tasks are initialized.
    */
   async function init() {
-
     // Handle SVG path movements
     const elements = document.querySelectorAll('path');
     const svg = document.getElementById('svg');
+    // loader element
+    const loaderEelement = document.getElementById('loader');
+
     /**
-   * Handles dragging functionality for an SVG path element.
-   * When the user clicks and holds on the path, it allows the path to be dragged around.
-   * The function also includes a timeout after the drag operation to reset the transformation.
-   *
-   * @param {SVGPathElement} path - The SVG path element to be dragged.
-   * @param {number} i - A value used to determine the delay for the timeout (in milliseconds).
-   * @returns {Promise} - A promise that resolves after the drag operation and timeout are completed.
-   */
-  async function loop(path, i) {
-    let isDragging = false,
-      offsetX,
-      offsetY;
+     * Handles dragging functionality for an SVG path element.
+     * When the user clicks and holds on the path, it allows the path to be dragged around.
+     * The function also includes a timeout after the drag operation to reset the transformation.
+     *
+     * @param {SVGPathElement} path - The SVG path element to be dragged.
+     * @param {number} i - A value used to determine the delay for the timeout (in milliseconds).
+     * @returns {Promise} - A promise that resolves after the drag operation and timeout are completed.
+     */
+    async function loop(path, i) {
+      let isDragging = false,
+        offsetX,
+        offsetY;
 
-    // Add event listeners for dragging functionality
-    path.addEventListener('mousedown', e => {
-      isDragging = true;
-      const rect = path.getBoundingClientRect();
-      const svgRect = svg.getBoundingClientRect();
-      offsetX = e.clientX - (rect.left - svgRect.left);
-      offsetY = e.clientY - (rect.top - svgRect.top);
-      path.style.cursor = 'move';
-    });
+      // Add event listeners for dragging functionality
+      path.addEventListener('mousedown', e => {
+        isDragging = true;
+        const rect = path.getBoundingClientRect();
+        const svgRect = svg.getBoundingClientRect();
+        offsetX = e.clientX - (rect.left - svgRect.left);
+        offsetY = e.clientY - (rect.top - svgRect.top);
+        path.style.cursor = 'move';
+      });
 
-    document.addEventListener('mousemove', e => {
-      if (isDragging) {
-        const newX = e.clientX - offsetX;
-        const newY = e.clientY - offsetY;
-        path.setAttribute('transform', `translate(${newX}, ${newY})`);
-      }
-    });
+      document.addEventListener('mousemove', e => {
+        if (isDragging) {
+          const newX = e.clientX - offsetX;
+          const newY = e.clientY - offsetY;
+          path.setAttribute('transform', `translate(${newX}, ${newY})`);
+        }
+      });
 
-    document.addEventListener('mouseup', () => {
-      if (isDragging) {
-        isDragging = false;
-        path.style.cursor = 'default';
-      }
-    });
+      document.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          path.style.cursor = 'default';
+        }
+      });
 
-    // Wait for the timeout to complete
-    await new Promise(resolve => {
-      setTimeout(async () => {
-        path.style.removeProperty('transform');
-        resolve();
-      }, 9); // Use 'i' for delay
-    });
-  }
+      // Wait for the timeout to complete
+      await new Promise(resolve => {
+        setTimeout(async () => {
+          path.style.removeProperty('transform');
+          resolve();
+        }, 9); // Use 'i' for delay
+      });
+    }
     // Handle gradient color pickers
     addListenersAndExport(['color1', 'color2', 'color3'], (id, index, color) => {
       changeStopColor('b', index, color); // Replace with your actual function logic
@@ -228,44 +230,44 @@
         }
 
         // Command to execute after all loops finish
-        document.getElementById('loader').classList.add('hidden');
+        loader.classList.add('hidden');
       }
     }
 
     document.addEventListener(
       'click',
       () => {
-        [document.getElementsByClassName('hidden')[1], document.getElementById('loader')].forEach(e => e.classList.remove('hidden'));
+        const svgElement = document.getElementsByClassName('hidden')[1];
+        [svgElement, loaderEelement].forEach(e => e.classList.remove('hidden'));
         movePaths(false);
       },
-      {
-        once: true,
-      }
+      { once: true }
     );
+
     movePaths(true);
   }
 
-      // Export the SVG content
-    document.getElementById('exportButton').addEventListener('click', () => {
-      const uniqueId = generateUniqueString('my-car_');
-      const serializer = new XMLSerializer();
-      let svgString = serializer.serializeToString(svg);
-      svgString = svgString.replace(/>\s+</g, '><').replace(/\s*<!--.*?-->\s*/g, '');
+  // Export the SVG content
+  document.getElementById('exportButton').addEventListener('click', () => {
+    const uniqueId = generateUniqueString('my-car_');
+    const serializer = new XMLSerializer();
+    let svgString = serializer.serializeToString(svg);
+    svgString = svgString.replace(/>\s+</g, '><').replace(/\s*<!--.*?-->\s*/g, '');
 
-      const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `my-car-${uniqueId}.svg`;
-      link.click();
-      URL.revokeObjectURL(link.href);
-      setTimeout(()=>{
+    const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `my-car-${uniqueId}.svg`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    setTimeout(() => {
       const blobs = new Blob([colors.join('\n')], { type: 'text/plain' });
       const links = document.createElement('a');
       links.href = URL.createObjectURL(blobs);
       links.download = `my-car-${uniqueId}.txt`;
       links.click();
-      },77)
-    });
+    }, 77);
+  });
   /**
    * Initializes the page by calling the `init` function when the DOM content is fully loaded.
    * The `init` function is executed only once when the DOM is ready.
