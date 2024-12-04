@@ -87,55 +87,6 @@
     }
   }
 
-  /**
-   * Handles dragging functionality for an SVG path element.
-   * When the user clicks and holds on the path, it allows the path to be dragged around.
-   * The function also includes a timeout after the drag operation to reset the transformation.
-   *
-   * @param {SVGPathElement} path - The SVG path element to be dragged.
-   * @param {number} i - A value used to determine the delay for the timeout (in milliseconds).
-   * @returns {Promise} - A promise that resolves after the drag operation and timeout are completed.
-   */
-  async function loop(path, i) {
-    let isDragging = false,
-      offsetX,
-      offsetY;
-
-    // Add event listeners for dragging functionality
-    path.addEventListener('mousedown', e => {
-      isDragging = true;
-      // Uncomment to enable custom dragging offsets based on SVG position and matrix
-      //const rect = path.getBoundingClientRect();
-      //const svgRect = svg.getBoundingClientRect();
-      //offsetX = e.clientX - (rect.left - svgRect.left - svgMatrix.e);
-      //offsetY = e.clientY - (rect.top - svgRect.top - svgMatrix.f);
-      path.style.cursor = 'move';
-    });
-
-    document.addEventListener('mousemove', e => {
-      if (isDragging) {
-        const newX = e.clientX - offsetX;
-        const newY = e.clientY - offsetY;
-        path.setAttribute('transform', `translate(${newX}, ${newY})`);
-      }
-    });
-
-    document.addEventListener('mouseup', () => {
-      if (isDragging) {
-        isDragging = false;
-        path.style.cursor = 'default';
-      }
-    });
-
-    // Wait for the timeout to complete
-    await new Promise(resolve => {
-      setTimeout(async () => {
-        path.style.removeProperty('transform');
-        resolve();
-      }, 9); // Use 'i' for delay
-    });
-  }
-
   const colors = [];
   /**
    * Adds input event listeners to color picker elements and updates the `colors` array
@@ -199,6 +150,57 @@
    * @returns {Promise<void>} A promise that resolves when all the tasks are initialized.
    */
   async function init() {
+
+    // Handle SVG path movements
+    const elements = document.querySelectorAll('path');
+    const svg = document.getElementById('svg');
+    /**
+   * Handles dragging functionality for an SVG path element.
+   * When the user clicks and holds on the path, it allows the path to be dragged around.
+   * The function also includes a timeout after the drag operation to reset the transformation.
+   *
+   * @param {SVGPathElement} path - The SVG path element to be dragged.
+   * @param {number} i - A value used to determine the delay for the timeout (in milliseconds).
+   * @returns {Promise} - A promise that resolves after the drag operation and timeout are completed.
+   */
+  async function loop(path, i) {
+    let isDragging = false,
+      offsetX,
+      offsetY;
+
+    // Add event listeners for dragging functionality
+    path.addEventListener('mousedown', e => {
+      isDragging = true;
+      const rect = path.getBoundingClientRect();
+      const svgRect = svg.getBoundingClientRect();
+      offsetX = e.clientX - (rect.left - svgRect.left);
+      offsetY = e.clientY - (rect.top - svgRect.top);
+      path.style.cursor = 'move';
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (isDragging) {
+        const newX = e.clientX - offsetX;
+        const newY = e.clientY - offsetY;
+        path.setAttribute('transform', `translate(${newX}, ${newY})`);
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        path.style.cursor = 'default';
+      }
+    });
+
+    // Wait for the timeout to complete
+    await new Promise(resolve => {
+      setTimeout(async () => {
+        path.style.removeProperty('transform');
+        resolve();
+      }, 9); // Use 'i' for delay
+    });
+  }
     // Handle gradient color pickers
     addListenersAndExport(['color1', 'color2', 'color3'], (id, index, color) => {
       changeStopColor('b', index, color); // Replace with your actual function logic
@@ -213,11 +215,6 @@
         updateGradientStop(i, color);
       }
     });
-
-    // Handle SVG path movements
-    const elements = document.querySelectorAll('path');
-    const svg = document.getElementById('svg');
-    // const svgMatrix = svg.getScreenCTM();
 
     async function movePaths(randomize = false) {
       if (randomize) {
@@ -245,8 +242,10 @@
         once: true,
       }
     );
+    movePaths(true);
+  }
 
-    // Export the SVG content
+      // Export the SVG content
     document.getElementById('exportButton').addEventListener('click', () => {
       const uniqueId = generateUniqueString('my-car_');
       const serializer = new XMLSerializer();
@@ -259,16 +258,14 @@
       link.download = `my-car-${uniqueId}.svg`;
       link.click();
       URL.revokeObjectURL(link.href);
-
+      setTimeout(()=>{
       const blobs = new Blob([colors.join('\n')], { type: 'text/plain' });
       const links = document.createElement('a');
       links.href = URL.createObjectURL(blobs);
       links.download = `my-car-${uniqueId}.txt`;
       links.click();
+      },77)
     });
-    movePaths(true);
-  }
-
   /**
    * Initializes the page by calling the `init` function when the DOM content is fully loaded.
    * The `init` function is executed only once when the DOM is ready.
