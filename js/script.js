@@ -152,7 +152,7 @@
   async function init() {
     // Handle SVG path movements
     const elements = document.querySelectorAll('path');
-    const svg = document.getElementById('svg');
+    const svgElement = document.getElementById('svg');
     // loader element
     const loaderElement = document.getElementById('loader');
 
@@ -173,10 +173,9 @@
       // Add event listeners for dragging functionality
       path.addEventListener('mousedown', e => {
         isDragging = true;
-        const rect = path.getBoundingClientRect();
-        const svgRect = svg.getBoundingClientRect();
-        offsetX = e.clientX - (rect.left - svgRect.left);
-        offsetY = e.clientY - (rect.top - svgRect.top);
+
+        offsetX = e.clientX;
+        offsetY = e.clientY;
         path.style.cursor = 'move';
       });
 
@@ -230,28 +229,24 @@
         }
 
         // Command to execute after all loops finish
-        loader.classList.add('hidden');
+        loaderElement.classList.add('hidden');
       }
     }
 
     document.addEventListener(
       'click',
       () => {
-        const svgElement = document.getElementsByClassName('hidden')[1];
-        [svgElement, loaderElement].forEach(e => e.classList.remove('hidden'));
+        [svgElement?.parentElement, loaderElement].forEach(e => e.classList.remove('hidden'));
         movePaths(false);
       },
       { once: true }
     );
 
-    movePaths(true);
-  }
-
   // Export the SVG content
   document.getElementById('exportButton').addEventListener('click', () => {
     const uniqueId = generateUniqueString('my-car_');
     const serializer = new XMLSerializer();
-    let svgString = serializer.serializeToString(svg);
+    let svgString = serializer.serializeToString(svgElement);
     svgString = svgString.replace(/>\s+</g, '><').replace(/\s*<!--.*?-->\s*/g, '');
 
     const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
@@ -268,6 +263,9 @@
     //   links.click();
     // }, 77);
   });
+    movePaths(true);
+  }
+
   /**
    * Initializes the page by calling the `init` function when the DOM content is fully loaded.
    * The `init` function is executed only once when the DOM is ready.
