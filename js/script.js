@@ -154,7 +154,7 @@
     const elements = document.querySelectorAll('path');
     const svg = document.getElementById('svg');
     // loader element
-    const loaderEelement = document.getElementById('loader');
+    const loaderElement = document.getElementById('loader');
 
     /**
      * Handles dragging functionality for an SVG path element.
@@ -238,7 +238,7 @@
       'click',
       () => {
         const svgElement = document.getElementsByClassName('hidden')[1];
-        [svgElement, loaderEelement].forEach(e => e.classList.remove('hidden'));
+        [svgElement, loaderElement].forEach(e => e.classList.remove('hidden'));
         movePaths(false);
       },
       { once: true }
@@ -260,13 +260,13 @@
     link.download = `my-car-${uniqueId}.svg`;
     link.click();
     URL.revokeObjectURL(link.href);
-    setTimeout(() => {
-      const blobs = new Blob([colors.join('\n')], { type: 'text/plain' });
-      const links = document.createElement('a');
-      links.href = URL.createObjectURL(blobs);
-      links.download = `my-car-${uniqueId}.txt`;
-      links.click();
-    }, 77);
+    // setTimeout(() => {
+    //   const blobs = new Blob([colors.join('\n')], { type: 'text/plain' });
+    //   const links = document.createElement('a');
+    //   links.href = URL.createObjectURL(blobs);
+    //   links.download = `my-car-${uniqueId}.txt`;
+    //   links.click();
+    // }, 77);
   });
   /**
    * Initializes the page by calling the `init` function when the DOM content is fully loaded.
