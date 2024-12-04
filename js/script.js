@@ -208,6 +208,7 @@
     document.getElementById('randomize').addEventListener('click', () => {
       for (let i = 0; i < 3; i++) {
         const color = getRandomHexColor();
+        colors[i] = color; // Update the color array
         changeStopColor('b', i, color);
         updateGradientStop(i, color);
       }
